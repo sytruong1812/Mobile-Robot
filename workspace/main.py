@@ -1,4 +1,3 @@
-import os
 import time
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO
@@ -83,13 +82,13 @@ def left():
 
 # Xe quay ngược 1 góc 180 độ
 
-
-# Đường kính bánh xe: Dn = 95mm
-# pi = 3.14
-# Chu vi bánh xe: Dn*pi=95*3.14=298.3 (mm)
-# Độ phân giải encoder 2400 xung/vòng
-# Số mm/1xung=298.3/2400=0,1242916666666667 (mm)
-
+"""
+    Đường kính bánh xe: Dn = 95mm
+    pi = 3.14
+    Chu vi bánh xe: Dn*pi=95*3.14=298.3 (mm)
+    Độ phân giải encoder 2400 xung/vòng
+    Số mm/1xung=298.3/2400=0,1242916666666667 (mm)
+"""
 def Encoder_Wheel():
     # Nhận vị trí hiện tại
     positionA = myEncoderA.position
@@ -115,7 +114,7 @@ def distanceMeasurement(TRIG,ECHO):
 
     pulseDuration = pulseEnd - pulseStart
     distance = pulseDuration * 17150        # multiply with the sonic speed (34300 cm/s)
-    distance = round(distance, 2)   # Làm tròn số 
+    distance = round(distance, 2)   # Làm tròn
     return distance
 
 while True:
