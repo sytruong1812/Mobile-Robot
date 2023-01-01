@@ -118,6 +118,9 @@ def Encoder_Wheel():
     wheel_B = positionB*(298.3/2400)
     print ("Distance_Wheel_B: ",wheel_B,"mm")
 
+def position():
+    global wheel_A
+    global wheel_B
     # Vị trí và góc mặc định
     x_old = 0
     y_old = 0
@@ -134,6 +137,7 @@ def Encoder_Wheel():
     print ("x: %f,y: %f, angle: %f" % x_i, y_i, angle_i)
 
 while True:
+    position()
     control = input("Control DC Motor: ")
     if control == "s":
         stopmotor()

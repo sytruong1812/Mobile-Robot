@@ -5,5 +5,5 @@ def print_machine_info():
     print ("Host name: %s" % host_name)
     print ("IP address: %s" % ip_address)
     
-if __name__ == '__main__':
+if __name__ == '__main__':          # Khởi chạy hàm print_machine_info() đầu tiên
     print_machine_info()
