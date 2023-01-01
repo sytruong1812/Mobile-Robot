@@ -24,6 +24,7 @@ for _ in range(360):
     y.append(0)
 
 port =  input("Enter port name which lidar is connected:") #windows
+#port = "/dev/ttyUSB0" #linux
 Obj = PyLidar3.YdLidarX4(port)  #PyLidar3.your_version_of_lidar(port,chunk_size)
 threading.Thread(target=draw).start()
 if(Obj.Connect()):
