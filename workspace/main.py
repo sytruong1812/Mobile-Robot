@@ -118,10 +118,11 @@ def Encoder_Wheel():
     wheel_B = positionB*(298.3/2400)
     print ("Distance_Wheel_B: ",wheel_B,"mm")
 
-    # Tính toán vị trí
-    angle_old = 0
+    # Vị trí và góc mặc định
     x_old = 0
     y_old = 0
+    angle_old = 0
+
     b = 30  # Khoảng cánh giữa 2 bánh xe
     midpoint = (wheel_A + wheel_B) / 2        # Độ dịch chuyển tương đối của điểm trung tâm
     angle_new = (wheel_A + wheel_B) / b         # Góc xoay của xe
