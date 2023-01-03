@@ -1,3 +1,5 @@
+# Nguồn: https://pypi.org/project/pyrplidar/
+
 import PyLidar3
 import time # Time module
 #Serial port to which lidar connected, Get it from device manager windows

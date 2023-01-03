@@ -19,7 +19,3 @@ def position(x_old, y_old, angle_old):
 
 while True:
     position(0, 0, 90)
-
-x: 65.947953
-y: 31.472079
-angle: 94.666667
