@@ -130,7 +130,7 @@ def position(x_old, y_old, angle_old):
 
     x_i = x_old + midpoint * math.cos(angle_i)          # Vị trí tương đối trục x của xe tại thời điểm i
     y_i = y_old + midpoint * math.sin(angle_i)         # Vị trí tương đối trục y của xe tại thời điểm i
-    print ("x: %f,y: %f, angle: %f" % x_i, y_i, angle_i)
+    print ("x: %f" % x_i, "y: %f" % y_i, "angle: %f" % angle_i)
 
 while True:
     position(0, 0, 0)
