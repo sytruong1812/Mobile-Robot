@@ -1,5 +1,6 @@
 import math
 
+# Khởi tạo cho trước quãng đường đi được của 2 bánh xe
 wheel_A = 60
 wheel_B = 80
 
