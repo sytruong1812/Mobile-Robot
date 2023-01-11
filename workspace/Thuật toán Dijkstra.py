@@ -1,42 +1,82 @@
-from heapq import *
-from collections import defaultdict
+import math
+import sys
+# Python program for Dijkstra's single
+# source shortest path algorithm. The program is
+# for adjacency matrix representation of the graph
+class Graph():
 
-"""Thuật toán tìm đường đi ngắn nhất"""
+	def __init__(self, vertices):
+		self.V = vertices
+		self.graph = [[0 for column in range(vertices)]
+					for row in range(vertices)]
 
-def dijkstra(edges, strat_node, end_node):
-    g = defaultdict(list) 
-    for start, end, weight in edges: 
-        g[start].append((weight, end)) 
-    q, visited = [(0, strat_node,())], set()
-    while q:        
-        (cost,v1,path) = heappop(q)
-        if v1 not in visited:
-            visited.add(v1)
-            path = (v1, path)            
-            if v1 == end_node:
-                return (cost, path)
-            for c, v2 in g.get(v1, ()):
-                if v2 not in visited:
-                    heappush(q, (cost+c, v2, path))
-        print (q)   
-    return float("inf")
+	def printSolution(self, dist):
+		print("Vertex \t Distance from Source")
+		for node in range(self.V):
+			print(node, "\t\t", dist[node])
 
-if __name__ == "__main__":
-    
-    edges = [
-        ("A", "B", 7),
-        ("A", "D", 5),
-        ("B", "C", 8),
-        ("B", "D", 9),
-        ("B", "E", 7),
-        ("C", "E", 5),
-        ("D", "E", 7),
-        ("D", "F", 6),
-        ("E", "F", 8),
-        ("E", "G", 9),
-        ("F", "G", 11)
-    ]
-    
-    print ("=== Dijkstra ===")
-    print ("A >> G:")
-    print (dijkstra(edges, "A", "G"))
+	# A utility function to find the vertex with
+	# minimum distance value, from the set of vertices
+	# not yet included in shortest path tree
+	def minDistance(self, dist, sptSet):
+
+		# Initialize minimum distance for next node
+		min = 1e7
+
+		# Search not nearest vertex not in the
+		# shortest path tree
+		for v in range(self.V):
+			if dist[v] < min and sptSet[v] == False:
+				min = dist[v]
+				min_index = v
+
+		return min_index
+
+	# Function that implements Dijkstra's single source
+	# shortest path algorithm for a graph represented
+	# using adjacency matrix representation
+	def dijkstra(self, src):
+
+		dist = [1e7] * self.V
+		dist[src] = 0
+		sptSet = [False] * self.V
+
+		for cout in range(self.V):
+
+			# Pick the minimum distance vertex from
+			# the set of vertices not yet processed.
+			# u is always equal to src in first iteration
+			u = self.minDistance(dist, sptSet)
+
+			# Put the minimum distance vertex in the
+			# shortest path tree
+			sptSet[u] = True
+
+			# Update dist value of the adjacent vertices
+			# of the picked vertex only if the current
+			# distance is greater than new distance and
+			# the vertex in not in the shortest path tree
+			for v in range(self.V):
+				if (self.graph[u][v] > 0 and
+				sptSet[v] == False and
+				dist[v] > dist[u] + self.graph[u][v]):
+					dist[v] = dist[u] + self.graph[u][v]
+
+		self.printSolution(dist)
+
+# Driver program
+g = Graph(9)
+g.graph = [[0, 4, 0, 0, 0, 0, 0, 8, 0],
+		[4, 0, 8, 0, 0, 0, 0, 11, 0],
+		[0, 8, 0, 7, 0, 4, 0, 0, 2],
+		[0, 0, 7, 0, 9, 14, 0, 0, 0],
+		[0, 0, 0, 9, 0, 10, 0, 0, 0],
+		[0, 0, 4, 14, 10, 0, 2, 0, 0],
+		[0, 0, 0, 0, 0, 2, 0, 1, 6],
+		[8, 11, 0, 0, 0, 0, 1, 0, 7],
+		[0, 0, 2, 0, 0, 0, 6, 7, 0]
+		]
+
+g.dijkstra(0)
+
+# This code is contributed by Divyanshu Mehta
