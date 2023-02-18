@@ -26,8 +26,8 @@ PWM.start(ENA, 0, 2000, 0)
 PWM.start(ENB, 0, 2000, 0)
 
 # Khởi tạo lớp để truy cập kênh eQEP1, eQEP2 và chỉ khởi tạo kênh đó
-myEncoderA = RotaryEncoder(eQEP0)
-myEncoderB = RotaryEncoder(eQEP2)
+myEncoderA = RotaryEncoder(eQEP0)       #eQEP0    P9.27    P9.42
+myEncoderB = RotaryEncoder(eQEP2)       #eQEP2    P8.11    P8.12
 # Chế độ tuyệt đối: vị trí bắt đầu từ 0 và được tăng hoặc giảm theo chuyển động của bộ mã hóa
 myEncoderA.setAbsolute()
 myEncoderB.setAbsolute()
@@ -133,7 +133,6 @@ def position(x_old, y_old, angle_old):
     print ("x: %f" % x_i, "y: %f" % y_i, "angle: %f" % angle_i)
 
 while True:
-    position(0, 0, 0)
     control = input("Control DC Motor: ")
     if control == "s":
         stopmotor()
