@@ -136,25 +136,21 @@ while True:
     control = input("Control DC Motor: ")
     if control == "s":
         stopmotor()
-        Encoder_Wheel()
-    if control == "w":
+    elif control == "w":
         forward()
-        Encoder_Wheel()
-    if control == "x":
+    elif control == "x":
         backward()
-        Encoder_Wheel()
-    if control == "a":
+    elif control == "a":
         left()
-        Encoder_Wheel()
-    if control == "d":
+    elif control == "d":
         right()
-        Encoder_Wheel()
-    if control == "e":
+    else:
         PWM.stop(ENA)
         PWM.stop(ENB)
         PWM.cleanup()
         myEncoderA.zero()   # Đặt lại vị trí encoderA về 0
         myEncoderB.zero()   # Đặt lại vị trí encoderB về 0
+    Encoder_Wheel()
 
 
     
