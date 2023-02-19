@@ -18,12 +18,12 @@ GPIO.setup(IN3,GPIO.OUT)
 GPIO.setup(IN4,GPIO.OUT)
 
 """PWM"""
-ENA = "P9_14"
-ENB = "P9_16"
+PWMA = "P9_14"
+PWMB = "P9_16"
 
 #PWM duty cycle. It must have a value from 0 to 100.
-PWM.start(ENA, 0, 2000, 0)
-PWM.start(ENB, 0, 2000, 0)
+PWM.start(PWMA, 0, 2000, 0)
+PWM.start(PWMB, 0, 2000, 0)
 
 # Khởi tạo lớp để truy cập kênh eQEP1, eQEP2 và chỉ khởi tạo kênh đó
 myEncoderA = RotaryEncoder(eQEP0)       #eQEP0    P9.27    P9.42
@@ -46,34 +46,34 @@ def backward():
     GPIO.output(IN2,GPIO.LOW)
     GPIO.output(IN3,GPIO.LOW)
     GPIO.output(IN4,GPIO.HIGH)
-    PWM.set_duty_cycle(ENA, 50)
-    PWM.set_duty_cycle(ENB, 50)
+    PWM.set_duty_cycle(PWMA, 50)
+    PWM.set_duty_cycle(PWMB, 50)
 def stopmotor():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
     GPIO.output(IN3,GPIO.LOW)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(ENA, 0)
-    PWM.set_duty_cycle(ENB, 0)
+    PWM.set_duty_cycle(PWMA, 0)
+    PWM.set_duty_cycle(PWMB, 0)
 def forward():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.HIGH)
     GPIO.output(IN3,GPIO.HIGH)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(ENA, 50)
-    PWM.set_duty_cycle(ENB, 50)
+    PWM.set_duty_cycle(PWMA, 50)
+    PWM.set_duty_cycle(PWMB, 50)
 def right():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.HIGH)
     GPIO.output(IN3,GPIO.LOW)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(ENB, 50)
+    PWM.set_duty_cycle(PWMB, 50)
 def left():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
     GPIO.output(IN3,GPIO.HIGH)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(ENA, 50)
+    PWM.set_duty_cycle(PWMA, 50)
     
 # Xe quay 1 góc 90 độ
 
@@ -118,7 +118,7 @@ def Encoder_Wheel():
     wheel_B = positionB*(298.3/2400)
     print ("Distance_Wheel_B: ",wheel_B,"mm")
 
-def position(x_old, y_old, angle_old):
+def Position(x_old, y_old, angle_old):
     b = 30  # Khoảng cánh giữa 2 bánh xe
     global wheel_A
     global wheel_B
@@ -133,6 +133,7 @@ def position(x_old, y_old, angle_old):
     print ("x: %f" % x_i, "y: %f" % y_i, "angle: %f" % angle_i)
 
 while True:
+    Position(0,0,0)
     control = input("Control DC Motor: ")
     if control == "s":
         stopmotor()
@@ -145,8 +146,8 @@ while True:
     elif control == "d":
         right()
     else:
-        PWM.stop(ENA)
-        PWM.stop(ENB)
+        PWM.stop(PWMA)
+        PWM.stop(PWMB)
         PWM.cleanup()
         myEncoderA.zero()   # Đặt lại vị trí encoderA về 0
         myEncoderB.zero()   # Đặt lại vị trí encoderB về 0
