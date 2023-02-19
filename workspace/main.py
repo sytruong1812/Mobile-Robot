@@ -22,8 +22,8 @@ PWMA = "P9_14"
 PWMB = "P9_16"
 
 #PWM duty cycle. It must have a value from 0 to 100.
-PWM.start(PWMA, 0, 2000, 0)
-PWM.start(PWMB, 0, 2000, 0)
+PWM.start(PWMA, 100, 2000, 1)
+PWM.start(PWMB, 100, 2000, 1)
 
 # Khởi tạo lớp để truy cập kênh eQEP1, eQEP2 và chỉ khởi tạo kênh đó
 myEncoderA = RotaryEncoder(eQEP0)       #eQEP0    P9.27    P9.42
@@ -41,39 +41,39 @@ GPIO.output("P9_15", False)
 time.sleep(0.5)
 
 
-def backward():
-    GPIO.output(IN1,GPIO.HIGH)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.HIGH)
-    PWM.set_duty_cycle(PWMA, 50)
-    PWM.set_duty_cycle(PWMB, 50)
-def stopmotor():
+def Stopmotor():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
     GPIO.output(IN3,GPIO.LOW)
     GPIO.output(IN4,GPIO.LOW)
     PWM.set_duty_cycle(PWMA, 0)
     PWM.set_duty_cycle(PWMB, 0)
-def forward():
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.HIGH)
+def Backward():
+    GPIO.output(IN1,GPIO.HIGH)
+    GPIO.output(IN2,GPIO.LOW)
     GPIO.output(IN3,GPIO.HIGH)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMA, 50)
-    PWM.set_duty_cycle(PWMB, 50)
-def right():
+    PWM.set_duty_cycle(PWMA, 25)
+    PWM.set_duty_cycle(PWMB, 25)
+def Forward():
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN2,GPIO.HIGH)
+    GPIO.output(IN3,GPIO.LOW)
+    GPIO.output(IN4,GPIO.HIGH)
+    PWM.set_duty_cycle(PWMA, 25)
+    PWM.set_duty_cycle(PWMB, 25)
+def Right():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.HIGH)
     GPIO.output(IN3,GPIO.LOW)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMB, 50)
-def left():
+    PWM.set_duty_cycle(PWMB, 25)
+def Left():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
     GPIO.output(IN3,GPIO.HIGH)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMA, 50)
+    PWM.set_duty_cycle(PWMA, 25)
     
 # Xe quay 1 góc 90 độ
 
@@ -83,7 +83,7 @@ def left():
 
 # Xe quay ngược 1 góc 180 độ
 
-def distanceMeasurement(TRIG,ECHO):
+def DistanceMeasurement(TRIG,ECHO):
     GPIO.output(TRIG, True)     # set Trigger to HIGH
     time.sleep(0.00001)         # set Trigger after 0.01ms to LOW
     GPIO.output(TRIG, False)
@@ -113,7 +113,7 @@ def Encoder_Wheel():
     positionA = myEncoderA.position
     positionB = myEncoderB.position
     # Pulse -> Distance
-    wheel_A = positionA*(198.3/2400)
+    wheel_A = positionA*(298.3/2400)
     print ("Distance_Wheel_A: ",wheel_A,"mm")
     wheel_B = positionB*(298.3/2400)
     print ("Distance_Wheel_B: ",wheel_B,"mm")
@@ -135,16 +135,16 @@ def Position(x_old, y_old, angle_old):
 while True:
     Position(0,0,0)
     control = input("Control DC Motor: ")
-    if control == "s":
-        stopmotor()
-    elif control == "w":
-        forward()
-    elif control == "x":
-        backward()
-    elif control == "a":
-        left()
-    elif control == "d":
-        right()
+    if control == "0":
+        Stopmotor()
+    elif control == "1":
+        Forward()
+    elif control == "2":
+        Backward()
+    elif control == "3":
+        Left()
+    elif control == "4":
+        Right()
     else:
         PWM.stop(PWMA)
         PWM.stop(PWMB)
