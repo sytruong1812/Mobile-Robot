@@ -20,5 +20,4 @@ def position(x_old, y_old, angle_old):
     x_old, y_old, angle_old = x_i, y_i, angle_i
 
 while True:
-
     position(0, 0, 0)
