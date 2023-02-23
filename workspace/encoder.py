@@ -29,7 +29,7 @@ while True:
     positionA = myEncoderA.position
     positionB = myEncoderB.position
 
-    wheel_A = positionA*(198.3/2400)
+    wheel_A = positionA*(298.3/2400)
     print ("Distance_Wheel_A: ",wheel_A,"mm")
 
     wheel_B = positionB*(298.3/2400)
