@@ -87,11 +87,14 @@ while True:
     if Control == "2":
         Backward()
     if Control == "3":
-        Right_Thuan()
-    if Control == "4":
-        Right_Nguoc()
-    if Control == "5":
         Left_Thuan()
-    if Control == "6":
+    if Control == "4":
+        Right_Thuan()
+    if Control == "5":
         Left_Nguoc()
-
+    if Control == "6":
+        Right_Nguoc()
+    else:
+        PWM.stop(PWMA)
+        PWM.stop(PWMB)
+        PWM.cleanup()

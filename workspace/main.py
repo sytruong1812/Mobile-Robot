@@ -4,26 +4,20 @@ import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO
 from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0, eQEP2
 
-"""MotorA"""
-IN1 = "P8_7"
-IN2 = "P8_8"
-
-"""MotorB"""
-IN3 = "P8_9"
-IN4 = "P8_10"
-
-GPIO.setup(IN1,GPIO.OUT)
-GPIO.setup(IN2,GPIO.OUT)
-GPIO.setup(IN3,GPIO.OUT)
-GPIO.setup(IN4,GPIO.OUT)
 
 """PWM"""
-PWMA = "P8_19"
-PWMB = "P9_14"
+RPWM_A = "P9_16"
+LPWM_A = "P9_14"
+
+RPWM_B = "P8_13"
+LPWM_B = "P8_19"
 
 #PWM duty cycle. It must have a value from 0 to 100.
-PWM.start(PWMA, 100, 2000, 1)
-PWM.start(PWMB, 100, 2000, 1)
+PWM.start(RPWM_A, 100, 2000, 1)
+PWM.start(LPWM_A, 100, 2000, 1)
+
+PWM.start(RPWM_B, 100, 2000, 1)
+PWM.start(LPWM_B, 100, 2000, 1)
 
 # Khởi tạo lớp để truy cập kênh eQEP1, eQEP2 và chỉ khởi tạo kênh đó
 myEncoderA = RotaryEncoder(eQEP2)       #eQEP0    P9.27    P9.42
@@ -44,50 +38,40 @@ GPIO.output("P9_15", False)
 time.sleep(0.5)
 
 def Forward():
-    GPIO.output(IN1,GPIO.HIGH)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.HIGH)
-    GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMA, 25)
-    PWM.set_duty_cycle(PWMB, 25)
+    PWM.set_duty_cycle(RPWM_A, 45)
+    PWM.set_duty_cycle(LPWM_A, 0)
+    PWM.set_duty_cycle(RPWM_B, 45)
+    PWM.set_duty_cycle(LPWM_B, 0)
 def Backward():
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.HIGH)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.HIGH)
-    PWM.set_duty_cycle(PWMA, 25)
-    PWM.set_duty_cycle(PWMB, 25)
+    PWM.set_duty_cycle(RPWM_A, 0)
+    PWM.set_duty_cycle(LPWM_A, 45)
+    PWM.set_duty_cycle(RPWM_B, 0)
+    PWM.set_duty_cycle(LPWM_B, 45)
 def Right_Thuan():
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.HIGH)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMB, 100)
+    PWM.set_duty_cycle(RPWM_A, 45)
+    PWM.set_duty_cycle(LPWM_A, 0)
+    PWM.set_duty_cycle(RPWM_B, 0)
+    PWM.set_duty_cycle(LPWM_B, 0)
 def Right_Nguoc():
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.HIGH)
-    PWM.set_duty_cycle(PWMB, 100)
+    PWM.set_duty_cycle(RPWM_A, 0)
+    PWM.set_duty_cycle(LPWM_A, 45)
+    PWM.set_duty_cycle(RPWM_B, 0)
+    PWM.set_duty_cycle(LPWM_B, 0)
 def Left_Thuan():
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.HIGH)
-    GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMA, 100)
+    PWM.set_duty_cycle(RPWM_A, 0)
+    PWM.set_duty_cycle(LPWM_A, 0)
+    PWM.set_duty_cycle(RPWM_B, 45)
+    PWM.set_duty_cycle(LPWM_B, 0)
 def Left_Nguoc():
-    GPIO.output(IN1,GPIO.HIGH)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMA, 100)
+    PWM.set_duty_cycle(RPWM_A, 0)
+    PWM.set_duty_cycle(LPWM_A, 0)
+    PWM.set_duty_cycle(RPWM_B, 0)
+    PWM.set_duty_cycle(LPWM_B, 45)
 def Stopmotor():
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMA, 0)
-    PWM.set_duty_cycle(PWMB, 0)
+    PWM.set_duty_cycle(RPWM_A, 0)
+    PWM.set_duty_cycle(LPWM_A, 0)
+    PWM.set_duty_cycle(RPWM_B, 0)
+    PWM.set_duty_cycle(LPWM_B, 0)
     
 # Xe quay 1 góc 90 độ
 
@@ -161,11 +145,6 @@ while True:
         Left_Thuan()
     if Control == "6":
         Left_Nguoc()
-    else:
-        PWM.stop(PWMA)
-        PWM.stop(PWMB)
-        PWM.cleanup()
-        myEncoderA.zero()   # Đặt lại vị trí encoderA về 0
-        myEncoderB.zero()   # Đặt lại vị trí encoderB về 0
+
 
 
