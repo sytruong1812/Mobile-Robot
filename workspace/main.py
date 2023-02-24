@@ -18,8 +18,8 @@ GPIO.setup(IN3,GPIO.OUT)
 GPIO.setup(IN4,GPIO.OUT)
 
 """PWM"""
-PWMA = "P9_14"
-PWMB = "P9_16"
+PWMA = "P8_19"
+PWMB = "P9_14"
 
 #PWM duty cycle. It must have a value from 0 to 100.
 PWM.start(PWMA, 100, 2000, 1)
@@ -57,18 +57,30 @@ def Backward():
     GPIO.output(IN4,GPIO.HIGH)
     PWM.set_duty_cycle(PWMA, 25)
     PWM.set_duty_cycle(PWMB, 25)
-def Right():
+def Right_Thuan():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.HIGH)
     GPIO.output(IN3,GPIO.LOW)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMB, 25)
-def Left():
+    PWM.set_duty_cycle(PWMB, 100)
+def Right_Nguoc():
+    GPIO.output(IN1,GPIO.LOW)
+    GPIO.output(IN2,GPIO.LOW)
+    GPIO.output(IN3,GPIO.LOW)
+    GPIO.output(IN4,GPIO.HIGH)
+    PWM.set_duty_cycle(PWMB, 100)
+def Left_Thuan():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
     GPIO.output(IN3,GPIO.HIGH)
     GPIO.output(IN4,GPIO.LOW)
-    PWM.set_duty_cycle(PWMA, 25)
+    PWM.set_duty_cycle(PWMA, 100)
+def Left_Nguoc():
+    GPIO.output(IN1,GPIO.HIGH)
+    GPIO.output(IN2,GPIO.LOW)
+    GPIO.output(IN3,GPIO.LOW)
+    GPIO.output(IN4,GPIO.LOW)
+    PWM.set_duty_cycle(PWMA, 100)
 def Stopmotor():
     GPIO.output(IN1,GPIO.LOW)
     GPIO.output(IN2,GPIO.LOW)
@@ -135,20 +147,25 @@ def Position(x_old, y_old, angle_old):
 while True:
     Position(0, 0, 0)
     Control = input("Control DC Motor: ")
-    if Control == "0":
+    if Control == "s":
         Stopmotor()
-    elif Control == "1":
+    if Control == "1":
         Forward()
-    elif Control == "2":
+    if Control == "2":
         Backward()
-    elif Control == "3":
-        Left()
-    elif Control == "4":
-        Right()
+    if Control == "3":
+        Right_Thuan()
+    if Control == "4":
+        Right_Nguoc()
+    if Control == "5":
+        Left_Thuan()
+    if Control == "6":
+        Left_Nguoc()
     else:
         PWM.stop(PWMA)
         PWM.stop(PWMB)
         PWM.cleanup()
         myEncoderA.zero()   # Đặt lại vị trí encoderA về 0
         myEncoderB.zero()   # Đặt lại vị trí encoderB về 0
+
 
