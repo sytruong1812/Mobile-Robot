@@ -1,0 +1,15 @@
+sudo su			#Vào quyền root
+lsb_release -a		#Cấu hình board
+connmanctl technologies	#Liệt kê các loại cổng kết nối khả dụng
+sudo connmanctl
+enable wifi
+scan wifi
+services			#Liệt kê danh sách các wifi scan được
+...
+agent on
+connect wifi_....		#wifi_... là tên các thiết bị được liệt kê ở trên
+Pass...			#Nhập Pass wifi
+quit				#Thoát
+Ping www.google.com	#Kiểm tra thử kết nối internet
+ifconfig			#Check IP
+
