@@ -1,0 +1,30 @@
+/* Định dạng trang web */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  /* Định dạng các nút điều khiển */
+  .button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 100px;
+    color: #fff;
+    background-color: #007bff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #0062cc;
+  }
+  
