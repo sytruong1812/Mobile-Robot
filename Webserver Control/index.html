@@ -19,30 +19,9 @@
     <div>
       <button id="backward" class="button">&#x2193;</button>
     </div>
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
-    
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      const firebaseConfig = {
-        apiKey: "AIzaSyARkFlLojdMNrwzAzxMpqB8-n0vpERfceI",
-        authDomain: "mobile-robot-control.firebaseapp.com",
-        databaseURL: "https://mobile-robot-control-default-rtdb.firebaseio.com",
-        projectId: "mobile-robot-control",
-        storageBucket: "mobile-robot-control.appspot.com",
-        messagingSenderId: "534722083026",
-        appId: "1:534722083026:web:0e719a4f2624e7c142150b",
-        measurementId: "G-9W8M7D1E8M"
-      };
-    
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    </script>
+    <!-- Thêm SDK của Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <!-- Liên kết với file JavaScript -->
     <script src="control.js"></script>
   </body>

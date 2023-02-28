@@ -1,9 +1,9 @@
 sudo su			#Vào quyền root
 lsb_release -a		#Cấu hình board
 connmanctl technologies	#Liệt kê các loại cổng kết nối khả dụng
-sudo connmanctl
-enable wifi
-scan wifi
+sudo connmanctl		#Vào connmanctl
+enable wifi			
+scan wifi			
 services			#Liệt kê danh sách các wifi scan được
 ...
 agent on
