@@ -1,8 +1,12 @@
 import time
 import math
+from firebase import firebase
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO
 from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0, eQEP2
+
+"""Firebase"""
+firebase = firebase.FirebaseApplication('https://mobile-robot-6269b-default-rtdb.firebaseio.com/', None)
 
 
 """PWM"""
@@ -129,22 +133,30 @@ def Position(x_old, y_old, angle_old):
     print ("x: %f" % x_i, "y: %f" % y_i, "angle: %f" % angle_i)
 
 while True:
-    Position(0, 0, 0)
-    Control = input("Control DC Motor: ")
-    if Control == "s":
-        Stopmotor()
-    if Control == "1":
+    #Position(0, 0, 0)
+    result = firebase.get('/Control', None)
+    if result["Forward"] == 1:
         Forward()
-    if Control == "2":
+        print("Forward")
+    elif result["Backward"] == 1:
         Backward()
-    if Control == "3":
-        Right_Thuan()
-    if Control == "4":
-        Right_Nguoc()
-    if Control == "5":
+        print("Backward")
+    elif result["Left_Thuan"] == 1:
         Left_Thuan()
-    if Control == "6":
+        print("Left_Thuận")
+    elif result["Left_Nguoc"] == 1:
         Left_Nguoc()
+        print("Left_Ngược")
+    elif result["Right_Thuan"] == 1:
+        Right_Thuan()
+        print("Right_Thuận")
+    elif result["Right_Nguoc"] == 1:
+        Right_Nguoc()
+        print("Right_Ngược")
+    else:
+        Stopmotor()
+        print("Stopmotor")
+
 
 
 

@@ -16,11 +16,13 @@ var database = firebase.database();
 // Lấy thông tin phần tử
 var forwardButton = document.getElementById("forward");
 var backwardButton = document.getElementById("backward");
-var leftButton = document.getElementById("left");
-var rightButton = document.getElementById("right");
+var leftThuanButton = document.getElementById("left_thuan");
+var leftNguocButton = document.getElementById("left_nguoc");
+var rightThuanButton = document.getElementById("right_thuan");
+var rightNguocButton = document.getElementById("right_nguoc");
 
 // Khai báo biến để lưu trạng thái điều khiển
-let controlState = { Forward: 0, Backward: 0, Left: 0, Right: 0 };
+let controlState = { Forward: 0, Backward: 0, Left_Thuan: 0, Left_Nguoc: 0, Right_Thuan: 0, Right_Nguoc: 0 };
 
 // Gán sự kiện khi nhấn giữ các button điều khiển
 forwardButton.addEventListener("mousedown", function() {
@@ -31,16 +33,24 @@ backwardButton.addEventListener("mousedown", function() {
     controlState.Backward = 1;
     database.ref("/Control").update(controlState);
 });
-leftButton.addEventListener("mousedown", function() {
-    controlState.Left = 1;
+leftThuanButton.addEventListener("mousedown", function() {
+    controlState.Left_Thuan = 1;
     database.ref("/Control").update(controlState);
 });
-rightButton.addEventListener("mousedown", function() {
-    controlState.Right = 1;
+leftNguocButton.addEventListener("mousedown", function() {
+    controlState.Left_Nguoc = 1;
+    database.ref("/Control").update(controlState);
+});
+rightThuanButton.addEventListener("mousedown", function() {
+    controlState.Right_Thuan = 1;
+    database.ref("/Control").update(controlState);
+});
+rightNguocButton.addEventListener("mousedown", function() {
+    controlState.Right_Nguoc = 1;
     database.ref("/Control").update(controlState);
 });
 
-// Gán sự kiện khi nhả các button điều khiển
+// Gán sự kiện khi nhấn giữ các button điều khiển
 forwardButton.addEventListener("mouseup", function() {
     controlState.Forward = 0;
     database.ref("/Control").update(controlState);
@@ -49,11 +59,19 @@ backwardButton.addEventListener("mouseup", function() {
     controlState.Backward = 0;
     database.ref("/Control").update(controlState);
 });
-leftButton.addEventListener("mouseup", function() {
-    controlState.Left = 0;
+leftThuanButton.addEventListener("mouseup", function() {
+    controlState.Left_Thuan = 0;
     database.ref("/Control").update(controlState);
 });
-rightButton.addEventListener("mouseup", function() {
-    controlState.Right = 0;
+leftNguocButton.addEventListener("mouseup", function() {
+    controlState.Left_Nguoc = 0;
+    database.ref("/Control").update(controlState);
+});
+rightThuanButton.addEventListener("mouseup", function() {
+    controlState.Right_Thuan = 0;
+    database.ref("/Control").update(controlState);
+});
+rightNguocButton.addEventListener("mouseup", function() {
+    controlState.Right_Nguoc = 0;
     database.ref("/Control").update(controlState);
 });
