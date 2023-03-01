@@ -1,3 +1,7 @@
+Link: https://www.youtube.com/watch?v=wPy0ldR02Is
+
+....................Bắt đầu......................................
+
 sudo su			#Vào quyền root
 lsb_release -a		#Cấu hình board
 connmanctl technologies	#Liệt kê các loại cổng kết nối khả dụng

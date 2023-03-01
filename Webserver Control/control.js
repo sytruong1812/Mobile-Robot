@@ -13,6 +13,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
+// Lấy thông tin phần tử
 var forwardButton = document.getElementById("forward");
 var backwardButton = document.getElementById("backward");
 var leftButton = document.getElementById("left");
