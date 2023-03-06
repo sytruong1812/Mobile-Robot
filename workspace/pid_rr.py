@@ -17,7 +17,7 @@ def PID_roirac_vantoc(output, tododat, tocdothuc):
 
     last_output = 0     # PWM điều khiển động cơ
 
-    Kp= 5; Ki = 0; Kd = 0
+    Kp= 0.3; Ki = 0.01; Kd = 0.03
     alpha = 0   
     beta = 0   
     gama = 0    
@@ -39,10 +39,11 @@ def PID_roirac_vantoc(output, tododat, tocdothuc):
     last_output = output
     E2 = E1
     E1 = E
-    if(output > 60):
-        output = 60
+    if(output > 50):
+        output = 50
     if(output < 0):
         output = 0
+
     if(output > 0):
         PWM.set_duty_cycle(RPWM, output)
         PWM.set_duty_cycle(LPWM, 0)
@@ -52,5 +53,5 @@ def PID_roirac_vantoc(output, tododat, tocdothuc):
     print(output)
 
 while True:
-    
     PID_roirac_vantoc(output, tocdodat, tocdothuc)
+    

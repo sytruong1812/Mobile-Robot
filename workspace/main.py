@@ -10,11 +10,11 @@ firebase = firebase.FirebaseApplication('https://mobile-robot-6269b-default-rtdb
 
 
 """PWM"""
-RPWM_A = "P9_16"
-LPWM_A = "P9_14"
+RPWM_A = "P8_13"
+LPWM_A = "P8_19"
 
-RPWM_B = "P8_13"
-LPWM_B = "P8_19"
+RPWM_B = "P9_16"
+LPWM_B = "P9_14"
 
 #PWM duty cycle. It must have a value from 0 to 100.
 PWM.start(RPWM_A, 100, 2000, 1)
