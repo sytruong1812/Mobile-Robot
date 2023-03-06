@@ -10,11 +10,11 @@ myEncoderA.setAbsolute()
 myEncoderB.setAbsolute()
 
 """PWM"""
-RPWM_A = "P9_16"
-LPWM_A = "P9_14"
+RPWM_A = "P8_13"
+LPWM_A = "P8_19"
 
-RPWM_B = "P8_13"
-LPWM_B = "P8_19"
+RPWM_B = "P9_16"
+LPWM_B = "P9_14"
 
 
 #PWM duty cycle. It must have a value from 0 to 100.
