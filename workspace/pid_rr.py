@@ -1,30 +1,31 @@
 import Adafruit_BBIO.PWM as PWM
 from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0
 
-RPWM = "P8_13"
-LPWM = "P8_19"
+RPWM = "P9_16"
+LPWM = "P9_14"
 
 PWM.start(RPWM, 100, 2000, 1)
 PWM.start(LPWM, 100, 2000, 1)
 
-myEncoder = RotaryEncoder(eQEP2)
+myEncoder = RotaryEncoder(eQEP0)
 myEncoder.setAbsolute()
 
-
-tocdodat = 40; tocdothuc = 0
-
-E = 0; E1 = 0; E2 = 0       # Sai số
-
-output = 0; last_output = 0     # PWM điều khiển động cơ
-
-Kp= 0; Ki = 0; Kd = 0
-alpha = 0   
-beta = 0   
-gama = 0    
-T = 0.01       # Thời gian lấy mẫu (Quan trọng)
-PPR = 2390       # Encoder đo được 2390 xung / vòng
+output = 0; tocdodat = 40; tocdothuc = 0
 
 def PID_roirac_vantoc(output, tododat, tocdothuc):
+    E = 0; E1 = 0; E2 = 0       # Sai số
+
+    last_output = 0     # PWM điều khiển động cơ
+
+    Kp= 5; Ki = 0; Kd = 0
+    alpha = 0   
+    beta = 0   
+    gama = 0    
+    T = 0.01       # Thời gian lấy mẫu (Quan trọng)
+    PPR = 2390       # Encoder đo được 2390 xung / vòng
+
+    pulse = myEncoder.position
+
     tocdothuc = (pulse / PPR) * (1/T) * 60
     pulse = 0 
     # E = tocdodat - tocdothuc
@@ -48,7 +49,8 @@ def PID_roirac_vantoc(output, tododat, tocdothuc):
     else:
         PWM.set_duty_cycle(RPWM, 0)
         PWM.set_duty_cycle(LPWM, 0)
+    print(output)
 
 while True:
-    pulse = myEncoderB.position
-    PID_roirac_vantoc()
+    
+    PID_roirac_vantoc(output, tocdodat, tocdothuc)
