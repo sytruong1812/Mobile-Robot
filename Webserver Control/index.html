@@ -3,22 +3,37 @@
   <head>
     <meta charset="utf-8">
     <title>Mobile Robot Control</title>
-    <link rel="stylesheet" href="style.css">    
+    <link rel="stylesheet" href="./style.css">    
   </head>
   <body>
     <h1>Mobile Robot Control</h1>
     <!-- Tạo các nút điều khiển -->
-    <div>
-      <button id="forward" class="button">Forward</button>
-    </div>
-    <div>
-      <button id="left_nguoc" class="button">Left.N</button>
-      <button id="left_thuan" class="button">Left.T</button>
-      <button id="right_thuan" class="button">Right.T</button>
-      <button id="right_nguoc" class="button">Right.N</button>
-    </div>
-    <div>
-      <button id="backward" class="button">Backward</button>
+    <div class="control">
+
+      <div>
+        <button id="forward" class="button btn_forward" style="--clr:#1e9bff "><span>
+          Forward
+        </span> <i></i></button>
+      </div>
+      <div class="btn_control">
+        <button id="left_nguoc" class="button btn_left" style="--clr:#ffb93e "><span>
+          Left.N
+        </span> <i></i></button>
+        <button id="left_thuan" class="button btn_left" style="--clr:#ffb93e "><span>
+          Left.T
+        </span><i></i></button>
+        <button id="right_thuan" class="button btn_right" style="--clr:#6eff3e"><span>
+          Right.T
+        </span> <i></i></button>
+        <button id="right_nguoc" class="button btn_right" style="--clr:#6eff3e "><span>
+          Right.N
+        </span> <i></i></button>
+      </div>
+      <div>
+        <button id="backward" class="button" style="--clr:#1e9bff "><span>
+          Backward
+        </span> <i></i></button>
+      </div>
     </div>
     <!-- Thêm SDK của Firebase Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
@@ -27,5 +42,4 @@
     <script src="control.js"></script>
   </body>
 </html>
-
 

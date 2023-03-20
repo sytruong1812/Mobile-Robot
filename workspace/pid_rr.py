@@ -21,6 +21,7 @@ gama = 0
 T = 0.01       # Thời gian lấy mẫu (Quan trọng)
 PPR = 2390       # Encoder đo được 2390 xung / vòng
 
+
 def PID_roirac_vantoc():
     global E, E1, E2, last_output, output
     global alpha, beta, gama
