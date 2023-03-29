@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webserver</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href='https://css.gg/arrow-up-o.css' rel='stylesheet'>
+  <link href='https://css.gg/controller.css' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <link href='https://css.gg/arrow-long-right-l.css' rel='stylesheet'>
+  <link href='https://css.gg/check-o.css' rel='stylesheet'>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>  
+  <!-- Thêm SDK của Firebase Realtime Database -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getDatabase, ref, set  } from 'https://cdnjs.cloudflare.com/ajax/libs/firebase/9.17.1/firebase-database.min.js';
+    // Initialize Firebase
+    let firebaseConfig = {
+
+      apiKey: "AIzaSyDeZ6Zp276tWMonX6f_XuN6X7muoFSph9g",
+      authDomain: "moblie-robot.firebaseapp.com",
+      databaseURL: "https://moblie-robot-default-rtdb.firebaseio.com",
+      projectId: "moblie-robot",
+      storageBucket: "moblie-robot.appspot.com",
+      messagingSenderId: "650713879075",
+      appId: "1:650713879075:web:23cb142c7f3dd0892d5796"
+    };
+    const app = initializeApp(firebaseConfig);
+
+    // Get a reference to the database
+    const database = getDatabase(app);
+
+    const refForward = ref(database, 'Control/forward');
+    const refLeft = ref(database, 'Control/left');
+    const refRight = ref(database, 'Control/right');
+    const refBackward = ref(database, 'Control/backward');
+
+    // Lấy thông tin phần tử điều khiển robot
+    let forward = document.getElementById('forward');
+    let left = document.getElementById('left');
+    let right = document.getElementById('right');
+    let backward = document.getElementById('backward');
+    // khai báo biến để lưu trạng thái điều khiển
+    let Control = {forward: false, left: false, right: false, backward: false};
+    //Gán sự kiện cho các nút điều khiển
+
+    forward.addEventListener('click', function () {
+      const isExist = forward.classList.contains('btn-success');
+      if (!isExist) {
+        forward.classList.add('btn-success');
+      } else {
+        forward.classList.remove('btn-success');
+      }
+      set(refForward, !isExist);
+    });
+
+
+    left.addEventListener('click', function () {
+      
+      const isExist = left.classList.contains('btn-success');
+      if (!isExist) {
+        left.classList.add('btn-success');
+      } else {
+        left.classList.remove('btn-success');
+      }
+      set(refLeft, !isExist);
+    });
+    right.addEventListener('click', function () {
+      
+      const isExist = right.classList.contains('btn-success');
+      if (!isExist) {
+        right.classList.add('btn-success');
+      } else {
+        right.classList.remove('btn-success');
+      }
+      set(refRight, !isExist);
+    });
+    backward.addEventListener('click', function () {
+      
+      const isExist = backward.classList.contains('btn-success');
+      if (!isExist) {
+        backward.classList.add('btn-success');
+      } else {
+        backward.classList.remove('btn-success');s
+      }
+      set(refBackward, !isExist);
+    });
+  </script>
+</head>
+
+
+<body class="">
+  <div>
+    <h1 class="text-lg text-center pt-5 pb-10 font-bold">HỆ THỐNG ĐIỀU KHIỂN VÀ GIÁM SÁT
+    </h1>
+  </div>
+  <div class="h-screen w-full pt-10 container mx-auto">
+    <!-- THIS SECTION BODY -->
+    <div class="grid grid-cols-12">
+      <!-- THIS SECTION CONTROLL -->
+      <div class="lg:col-span-4 md:col-span-6 min-[480px]:col-span-6 max-[480px]:col-span-12">
+        <p class="font-bold text-lg text-center mb-5 flex justify-center items-center">
+          <span class="mr-2">CONTROL</span>
+          <i class="gg-controller ml-2"></i>
+        </p>
+        <div class="grid grid-cols-3 w-[220px] h-[220px] mx-auto border-2 rounded-full p-3 border-slate-400	">
+          <div class="col-start-2 col-end-3 cursor-pointer tooltip hover:tooltip-open tooltip-success tooltip-top"
+            data-tip="forward">
+            <!-- TOP -->
+            <button id="forward" class="btn btn-lg btn-circle">
+              <svg class="h-10 w-10 active:scale-95" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M14.8285 11.9481L16.2427 10.5339L12 6.29122L7.7574 10.5339L9.17161 11.9481L11 10.1196V17.6568H13V10.1196L14.8285 11.9481Z"
+                  fill="currentColor" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M19.7782 4.22183C15.4824 -0.0739415 8.51759 -0.0739422 4.22183 4.22183C-0.0739415 8.51759 -0.0739422 15.4824 4.22183 19.7782C8.51759 24.0739 15.4824 24.0739 19.7782 19.7782C24.0739 15.4824 24.0739 8.51759 19.7782 4.22183ZM18.364 5.63604C14.8492 2.12132 9.15076 2.12132 5.63604 5.63604C2.12132 9.15076 2.12132 14.8492 5.63604 18.364C9.15076 21.8787 14.8492 21.8787 18.364 18.364C21.8787 14.8492 21.8787 9.15076 18.364 5.63604Z"
+                  fill="currentColor" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="col-start-1 col-end-2 cursor-pointer tooltip hover:tooltip-open tooltip-success tooltip-left"
+            data-tip="left">
+            <!-- LEFT -->
+            <button id="left" class="btn btn-lg btn-circle">
+              <svg class="h-10 w-10 active:scale-95 -rotate-90" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M14.8285 11.9481L16.2427 10.5339L12 6.29122L7.7574 10.5339L9.17161 11.9481L11 10.1196V17.6568H13V10.1196L14.8285 11.9481Z"
+                  fill="currentColor" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M19.7782 4.22183C15.4824 -0.0739415 8.51759 -0.0739422 4.22183 4.22183C-0.0739415 8.51759 -0.0739422 15.4824 4.22183 19.7782C8.51759 24.0739 15.4824 24.0739 19.7782 19.7782C24.0739 15.4824 24.0739 8.51759 19.7782 4.22183ZM18.364 5.63604C14.8492 2.12132 9.15076 2.12132 5.63604 5.63604C2.12132 9.15076 2.12132 14.8492 5.63604 18.364C9.15076 21.8787 14.8492 21.8787 18.364 18.364C21.8787 14.8492 21.8787 9.15076 18.364 5.63604Z"
+                  fill="currentColor" />
+              </svg>
+            </button>
+          </div>
+          <div class="col-start-3 col-end-4 cursor-pointer tooltip hover:tooltip-open tooltip-success tooltip-right"
+            data-tip="right">
+            <!-- RIGHT -->
+            <button id="right" class="btn btn-lg btn-circle">
+              <svg class="h-10 w-10 active:scale-95 rotate-90" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M14.8285 11.9481L16.2427 10.5339L12 6.29122L7.7574 10.5339L9.17161 11.9481L11 10.1196V17.6568H13V10.1196L14.8285 11.9481Z"
+                  fill="currentColor" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M19.7782 4.22183C15.4824 -0.0739415 8.51759 -0.0739422 4.22183 4.22183C-0.0739415 8.51759 -0.0739422 15.4824 4.22183 19.7782C8.51759 24.0739 15.4824 24.0739 19.7782 19.7782C24.0739 15.4824 24.0739 8.51759 19.7782 4.22183ZM18.364 5.63604C14.8492 2.12132 9.15076 2.12132 5.63604 5.63604C2.12132 9.15076 2.12132 14.8492 5.63604 18.364C9.15076 21.8787 14.8492 21.8787 18.364 18.364C21.8787 14.8492 21.8787 9.15076 18.364 5.63604Z"
+                  fill="currentColor" />
+              </svg>
+            </button>
+          </div>
+          <div class="col-start-2 col-end-3 cursor-pointer tooltip hover:tooltip-open tooltip-success tooltip-bottom"
+            data-tip="backward">
+            <!-- BOTTOM -->
+            <button id="backward" class="btn btn-lg btn-circle">
+              <svg class="h-10 w-10 active:scale-95 -rotate-180" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M14.8285 11.9481L16.2427 10.5339L12 6.29122L7.7574 10.5339L9.17161 11.9481L11 10.1196V17.6568H13V10.1196L14.8285 11.9481Z"
+                  fill="currentColor" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M19.7782 4.22183C15.4824 -0.0739415 8.51759 -0.0739422 4.22183 4.22183C-0.0739415 8.51759 -0.0739422 15.4824 4.22183 19.7782C8.51759 24.0739 15.4824 24.0739 19.7782 19.7782C24.0739 15.4824 24.0739 8.51759 19.7782 4.22183ZM18.364 5.63604C14.8492 2.12132 9.15076 2.12132 5.63604 5.63604C2.12132 9.15076 2.12132 14.8492 5.63604 18.364C9.15076 21.8787 14.8492 21.8787 18.364 18.364C21.8787 14.8492 21.8787 9.15076 18.364 5.63604Z"
+                  fill="currentColor" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+     
+      <!-- THIS SECTION COORDINATE -->
+      <div class="lg:col-span-4 md:col-span-6 min-[480px]:col-span-6 max-[480px]:col-span-12">
+        <p class="font-bold text-lg text-center mb-5 flex justify-center items-center">
+          <span class="mr-2">DIRECTIONAL</span>
+          <i class="gg-arrow-long-right-l"></i>
+        </p>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <input type="text" placeholder="Vị trí X" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div>
+            <input type="text" placeholder="Vị trí Y" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div>
+            <input type="text" placeholder="Tốc độ" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div>
+            <input type="text" placeholder="Thời gian" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div class="col-span-2">
+            <select class="select select-success w-full">
+              <option disabled selected>Phương hướng?</option>
+              <option>Đằng trước</option>
+              <option>Đằng sau</option>
+              <option>Bên trái</option>
+              <option>Bên phải</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <button class="btn btn-lg btn-success w-full">Điều hướng ngay
+              <i class="gg-check-o ml-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+//Điều hướng vị trí bằng lidar có trục x y
+  </script>
+
+    <!-- Graphs with x-axis and y-axis  -->
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 gap-4">
+        <div class="col-span 1">
+          <div class="card">
+            <div class="card-body">
+              <div class="flex justify-between items-center">
+                <h2 class="card-title">Graphs with x-axis and y-axis</h2>
+                <div class="dropdown dropdown-end">
+                  <div tabindex="0" class="m-1 btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical"
+                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#718096"
+                      fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="12" cy="19" r="1" />
+                      <circle cx="12" cy="5" r="1" />
+                    </svg>
+                  </div>
+                  <ul tabindex="0"
+                    class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
+                    <li>
+                      <a href="#">Hành động</a>
+                    </li>
+                    <li>
+                      <a href="#">Hành động khác</a>
+                    </li>
+                    <li>
+                      <a href="#"> Hành động thời điểm hiện tại</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div id="myPlot">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+      var xData = [0]; // initialize x-axis data with zero
+      var yData = [0]; // initialize y-axis data with zero
+
+      var layout = {
+        xaxis: {
+          title: 'X - axis (m)'
+        },
+        yaxis: {
+          title: 'Y - axis (m)'
+        }
+      };
+
+      var trace = {
+        x: xData,
+        y: yData,
+        mode: 'lines+markers',
+        type: 'scatter'
+      };
+
+      Plotly.newPlot('myPlot', [trace], layout);
+
+      // function to update the plot with new data
+      function updatePlot(newX, newY) {
+        // add new data to the existing arrays
+        xData.push(newX);
+        yData.push(newY);
+
+        // update the trace data with the new arrays
+        Plotly.update('myPlot', {x: [xData], y: [yData]});
+      }
+      updatePlot(2, 3)
+      updatePlot(4, 4)
+    </script>  
+</body>
+</html>
