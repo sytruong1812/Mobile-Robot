@@ -49,14 +49,19 @@ def PID_roirac_vitri_trai(vitridat, Kp, Kd, Ki, T):
         output = output
     return output
 
-def Motor(a):
-    PWM.set_duty_cycle(RPWM_A, a)
+def Motor(pwm):
+    PWM.set_duty_cycle(RPWM_A, pwm)
     PWM.set_duty_cycle(LPWM_A, 0)
 
-while True:
-    PID_roirac_vitri_trai(660, 0.03, 0.00005, 0.00005, 30)
-    print("Ouput left:", output)
-    Motor(output)
+try: 
+    while True:
+        PID_roirac_vitri_trai(660, 0.03, 0.00005, 0.00005, 30)
+        print("Ouput left:", output)
+        Motor(output)
+except KeyboardInterrupt:
+    PWM.stop(RPWM_A)
+    PWM.stop(LPWM_A)
+    PWM.cleanup()
 
 
 

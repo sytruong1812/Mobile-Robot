@@ -1,19 +1,19 @@
 import Adafruit_BBIO.PWM as PWM
-from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0
+from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP2
 
-RPWM_B = "P9_16"
-LPWM_B = "P9_14"
+RPWM_A = "P8_13"
+LPWM_A = "P8_19"
 
-PWM.start(RPWM_B, 100, 2000, 1)
-PWM.start(LPWM_B, 100, 2000, 1)
+PWM.start(RPWM_A, 100, 2000, 1)
+PWM.start(LPWM_A, 100, 2000, 1)
 
-myEncoderB = RotaryEncoder(eQEP0)       #eQEP0    P9.27    P9.42
-myEncoderB.setAbsolute()
-
-# pulse = 0 
+myEncoderA = RotaryEncoder(eQEP2)       #eQEP2    P8.11    P8.12
+myEncoderA.setAbsolute()
+# myEncoderB.frequency = 1000
+pulse = 0 
 
 """PID rời rạc vị trí"""
-vitri = 0
+tocdo = 0
 E = 0; E1 = 0; E2 = 0           # Sai số
 output = 0; last_output = 0     # PWM điều khiển động cơ
 alpha = 0; beta = 0; gama = 0 
@@ -22,16 +22,17 @@ alpha = 0; beta = 0; gama = 0
 # T = 30           # Thời gian lấy mẫu (Quan trọng)
 # PPR = 2300       # Encoder đo được 2390 xung / vòng
 
-def PID_roirac_vitri_phai(vitridat, Kp, Ki, Kd, T):
+def PID_roirac_tocdo_trai(tocdodat, Kp, Kd, Ki, T):
     global E, E1, E2, last_output, output
-    global alpha, beta, gama
+    global alpha, beta, gama, pulse
     
-    pulse = myEncoderB.position
+    pulse = myEncoderA.position
 
-    vitri = ((pulse*360)/2300)
+    # tocdo = (pulse / 2300) * (60 / T)       # Từ số xung/phút -> vận tốc
+    tocdo = ((pulse) * (60 * (1000 / T))) / 2300        # Từ số xung/phút -> vận tốc
     
     # Tính sai số E
-    E = vitridat - vitri
+    E = abs(tocdodat) - abs(tocdo)
 
     alpha = (2 * T * Kp) + (Ki * T * T) + (2 * Kd)
     beta = (T * T * Ki) - (4 * Kd) - (2 * T * Kp)
@@ -41,8 +42,8 @@ def PID_roirac_vitri_phai(vitridat, Kp, Ki, Kd, T):
     E2 = E1
     E1 = E 
 
-    if(output > 60):
-        output = 60
+    if(output > 100):
+        output = 100
     if(output < 30):
         output = 30
     if(output > 0):
@@ -50,19 +51,17 @@ def PID_roirac_vitri_phai(vitridat, Kp, Ki, Kd, T):
     return output
 
 def Motor(pwm):
-    PWM.set_duty_cycle(RPWM_B, pwm)
-    PWM.set_duty_cycle(LPWM_B, 0)
+    PWM.set_duty_cycle(RPWM_A, pwm)
+    PWM.set_duty_cycle(LPWM_A, 0)
 
 try:
     while True:
-        PID_roirac_vitri_phai(660, 0.03, 0.00005, 0.00005, 30)
+        PID_roirac_tocdo_trai(60, 1.001, 0.0, 0.0, 30)
         print("Ouput left:", output)
         Motor(output)
 except KeyboardInterrupt:
-    PWM.stop(RPWM_B)
-    PWM.stop(LPWM_B)
+    PWM.stop(RPWM_A)
+    PWM.stop(LPWM_A)
     PWM.cleanup()
-
-
 
 

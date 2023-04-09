@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webserver</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href='https://css.gg/arrow-up-o.css' rel='stylesheet'>
+  <link href='https://css.gg/controller.css' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <link href='https://css.gg/arrow-long-right-l.css' rel='stylesheet'>
+  <link href='https://css.gg/check-o.css' rel='stylesheet'>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>  
+  <link rel="stylesheet" href="./style.css">    
+  <!-- Thêm SDK của Firebase Realtime Database -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getDatabase, ref, set  } from 'https://cdnjs.cloudflare.com/ajax/libs/firebase/9.17.1/firebase-database.min.js';
+    // Initialize Firebase
+    let firebaseConfig = {
+
+      apiKey: "AIzaSyDeZ6Zp276tWMonX6f_XuN6X7muoFSph9g",
+      authDomain: "moblie-robot.firebaseapp.com",
+      databaseURL: "https://moblie-robot-default-rtdb.firebaseio.com",
+      projectId: "moblie-robot",
+      storageBucket: "moblie-robot.appspot.com",
+      messagingSenderId: "650713879075",
+      appId: "1:650713879075:web:23cb142c7f3dd0892d5796"
+    };
+    const app = initializeApp(firebaseConfig);
+
+    // Get a reference to the database
+    const database = getDatabase(app);
+
+    const refForward = ref(database, 'Control/forward');
+    const refLeft = ref(database, 'Control/left');
+    const refRight = ref(database, 'Control/right');
+    const refBackward = ref(database, 'Control/backward');
+
+    // Lấy thông tin phần tử điều khiển robot
+    let forward = document.getElementById('forward');
+    let left = document.getElementById('left');
+    let right = document.getElementById('right');
+    let backward = document.getElementById('backward');
+    // khai báo biến để lưu trạng thái điều khiển
+    let Control = {forward: false, left: false, right: false, backward: false};
+    //Gán sự kiện cho các nút điều khiển
+
+    forward.addEventListener('click', function () {
+      const isExist = forward.classList.contains('btn-success');
+      if (!isExist) {
+        forward.classList.add('btn-success');
+      } else {
+        forward.classList.remove('btn-success');
+      }
+      set(refForward, !isExist);
+    });
+
+
+    left.addEventListener('click', function () {
+      
+      const isExist = left.classList.contains('btn-success');
+      if (!isExist) {
+        left.classList.add('btn-success');
+      } else {
+        left.classList.remove('btn-success');
+      }
+      set(refLeft, !isExist);
+    });
+    right.addEventListener('click', function () {
+      
+      const isExist = right.classList.contains('btn-success');
+      if (!isExist) {
+        right.classList.add('btn-success');
+      } else {
+        right.classList.remove('btn-success');
+      }
+      set(refRight, !isExist);
+    });
+    backward.addEventListener('click', function () {
+      
+      const isExist = backward.classList.contains('btn-success');
+      if (!isExist) {
+        backward.classList.add('btn-success');
+      } else {
+        backward.classList.remove('btn-success');s
+      }
+      set(refBackward, !isExist);
+    });
+  </script>
+</head>
+
+
+<body class="body">
+  <div>
+    <h1 class="text-lg text-center pt-5 pb-10 font-bold">HỆ THỐNG ĐIỀU KHIỂN VÀ GIÁM SÁT
+    </h1>
+  </div>
+  <div class="h-screen w-full pt-10 container information mx-auto">
+    <!-- THIS SECTION BODY -->
+    <div class="control">
+
+      <div>
+        <button id="forward" class="button btn_forward" style="--clr:#1e9bff "><span>
+          Forward
+        </span> <i></i></button>
+      </div>
+      <div class="btn_control">
+        <button id="left_nguoc " class="button btn_left" style="--clr:#ffb93e "><span>
+          Left.N
+        </span> <i></i></button>
+        <button id="left_thuan" class="button btn_left" style="--clr:#ffb93e "><span>
+          Left.T
+        </span><i></i></button>
+        <button id="right_thuan" class="button btn_right" style="--clr:#6eff3e"><span>
+          Right.T
+        </span> <i></i></button>
+        <button id="right_nguoc" class="button btn_right" style="--clr:#6eff3e "><span>
+          Right.N
+        </span> <i></i></button>
+      </div>
+      <div>
+        <button id="backward" class="button" style="--clr:#1e9bff "><span>
+          Backward
+        </span> <i></i></button>
+      </div>
+    </div>
+   
+    <div class="grid grid-cols-12 detail_control" style="position: relative;">
+      <!-- THIS SECTION CONTROLL -->
+      <!-- THIS SECTION COORDINATE -->
+      <div class="lg:col-span-4 md:col-span-6 min-[480px]:col-span-6 max-[480px]:col-span-12" style="    position: absolute;
+      top: 0;
+      right: 33%;
+      margin-top: 24px;">
+        <p class="font-bold text-lg text-center mb-5 flex justify-center items-center">
+          <span class="mr-2">DIRECTIONAL</span>
+          <i class="gg-arrow-long-right-l"></i>
+        </p>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <input type="text" placeholder="Vị trí X" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div>
+            <input type="text" placeholder="Vị trí Y" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div>
+            <input type="text" placeholder="Tốc độ" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div>
+            <input type="text" placeholder="Thời gian" class="input input-bordered input-success w-full max-w-xs" />
+          </div>
+          <div class="col-span-2">
+            <select class="select select-success w-full">
+              <option disabled selected>Phương hướng?</option>
+              <option>Đằng trước</option>
+              <option>Đằng sau</option>
+              <option>Bên trái</option>
+              <option>Bên phải</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <button class="btn btn-lg btn-success w-full">Điều hướng ngay
+              <i class="gg-check-o ml-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+//Điều hướng vị trí bằng lidar có trục x y
+  </script>
+
+    <!-- Graphs with x-axis and y-axis  -->
+    <div class="container map mx-auto">
+      <div class="grid grid-cols-1 gap-4">
+        <div class="col-span 1">
+          <div class="card">
+            <div class="card-body">
+              <div class="flex justify-between items-center">
+                <h2 class="card-title">Graphs with x-axis and y-axis</h2>
+                <div class="dropdown dropdown-end">
+                  <div tabindex="0" class="m-1 btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical"
+                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#718096"
+                      fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="12" cy="19" r="1" />
+                      <circle cx="12" cy="5" r="1" />
+                    </svg>
+                  </div>
+                  <ul tabindex="0"
+                    class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
+                    <li>
+                      <a href="#">Hành động</a>
+                    </li>
+                    <li>
+                      <a href="#">Hành động khác</a>
+                    </li>
+                    <li>
+                      <a href="#"> Hành động thời điểm hiện tại</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div id="myPlot">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+      var xData = [0]; // initialize x-axis data with zero
+      var yData = [0]; // initialize y-axis data with zero
+
+      var layout = {
+        xaxis: {
+          title: 'X - axis (m)'
+        },
+        yaxis: {
+          title: 'Y - axis (m)'
+        }
+      };
+
+      var trace = {
+        x: xData,
+        y: yData,
+        mode: 'lines+markers',
+        type: 'scatter'
+      };
+
+      Plotly.newPlot('myPlot', [trace], layout);
+
+      // function to update the plot with new data
+      function updatePlot(newX, newY) {
+        // add new data to the existing arrays
+        xData.push(newX);
+        yData.push(newY);
+
+        // update the trace data with the new arrays
+        Plotly.update('myPlot', {x: [xData], y: [yData]});
+      }
+      updatePlot(2, 3)
+      updatePlot(4, 4)
+    </script>  
+</body>
+</html>
