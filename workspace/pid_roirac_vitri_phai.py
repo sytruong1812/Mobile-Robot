@@ -1,14 +1,14 @@
-import Adafruit_BBIO.PWM as PWM
-from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0
+# import Adafruit_BBIO.PWM as PWM
+# from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0
 
-RPWM_B = "P9_16"
-LPWM_B = "P9_14"
+# RPWM_B = "P9_16"
+# LPWM_B = "P9_14"
 
-PWM.start(RPWM_B, 100, 2000, 1)
-PWM.start(LPWM_B, 100, 2000, 1)
+# PWM.start(RPWM_B, 100, 2000, 1)
+# PWM.start(LPWM_B, 100, 2000, 1)
 
-myEncoderB = RotaryEncoder(eQEP0)       #eQEP0    P9.27    P9.42
-myEncoderB.setAbsolute()
+# myEncoderB = RotaryEncoder(eQEP0)       #eQEP0    P9.27    P9.42
+# myEncoderB.setAbsolute()
 
 # pulse = 0 
 
@@ -44,7 +44,7 @@ def PID_roirac_vitri_phai(vitridat, Kp, Ki, Kd, T):
     if(output > 60):
         output = 60
     if(output < 30):
-        output = 30
+        output = 0
     if(output > 0):
         output = output
     return output
@@ -53,15 +53,15 @@ def Motor(pwm):
     PWM.set_duty_cycle(RPWM_B, pwm)
     PWM.set_duty_cycle(LPWM_B, 0)
 
-try:
-    while True:
-        PID_roirac_vitri_phai(660, 0.03, 0.00005, 0.00005, 30)
-        print("Ouput left:", output)
-        Motor(output)
-except KeyboardInterrupt:
-    PWM.stop(RPWM_B)
-    PWM.stop(LPWM_B)
-    PWM.cleanup()
+# try:
+#     while True:
+#         PID_roirac_vitri_phai(8045, 0.03, 0.00005, 0.00005, 30)
+#         print("Ouput left:", output)
+#         Motor(output)
+# except KeyboardInterrupt:
+#     PWM.stop(RPWM_B)
+#     PWM.stop(LPWM_B)
+#     PWM.cleanup()
 
 
 

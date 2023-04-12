@@ -44,7 +44,7 @@ def PID_roirac_vitri_trai(vitridat, Kp, Kd, Ki, T):
     if(output > 60):
         output = 60
     if(output < 30):
-        output = 30
+        output = 0
     if(output > 0):
         output = output
     return output
@@ -55,7 +55,7 @@ def Motor(pwm):
 
 try: 
     while True:
-        PID_roirac_vitri_trai(660, 0.03, 0.00005, 0.00005, 30)
+        PID_roirac_vitri_trai(8045, 0.03, 0.00005, 0.00005, 30)
         print("Ouput left:", output)
         Motor(output)
 except KeyboardInterrupt:
