@@ -1,11 +1,10 @@
-import sys
 import math
 from firebase import firebase
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO
 from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0, eQEP2
-import pid_roirac_vitri_phai
-import pid_roirac_vitri_trai
+import pid_roirac_tocdo_phai
+import pid_roirac_tocdo_trai
 
 """---------------------Firebase------------------------"""
 firebase = firebase.FirebaseApplication('https://mobile-robot-6269b-default-rtdb.firebaseio.com/', None)
@@ -51,7 +50,6 @@ def Forward(pwm_right, pwm_left):
     PWM.set_duty_cycle(LPWM_A, 0)
     PWM.set_duty_cycle(RPWM_B, pwm_right)
     PWM.set_duty_cycle(LPWM_B, 0)
-    
 # Xe quay 1 góc 90 độ
 
 # Xe quay ngược 1 góc 90 độ
@@ -66,6 +64,27 @@ def kinetics():
     x = v * math.cos(theta)
     y = v * math.sin(theta)
 
+def PID_right(gocquay_right, char):
+    if char == 't':
+        vitridat = gocquay_right
+        pulseB = myEncoderB.position
+        vitrithuc = pulseB * (360/2390)
+        output = pid_roirac_tocdo_phai.PID(output, tocdodat)
+        if vitrithuc < vitridat:
+            tocdodat = tocdodat + 5
+            if tocdodat >= 100: tocdodat = 100
+            Forward()
+def PID_left(gocquay_left, char):
+    if char == 't':
+        vitridat = gocquay_left
+        pulseA = myEncoderB.position
+        vitrithuc = pulseA * (360/2390)
+        output = pid_roirac_tocdo_trai.PID(output, tocdodat)
+        if vitrithuc < vitridat:
+            tocdodat = tocdodat + 5
+            if tocdodat >= 100: tocdodat = 100
+            Forward()
+
 """
     Đường kính bánh xe: Dn = 95mm = 9.5cm
     pi = 3.14159
@@ -73,28 +92,41 @@ def kinetics():
     Độ phân giải encoder 2400 xung/vòng
     Số cm/xung=29.83/2400=0.01242916667 (cm/xung)
     -> Xe đi 1m = 100cm cần: 100/(0.01242916666) = 8045 (xung)
+
+    Hệ số khoảng cách đo bằng thực nghiệm cho xe chạy 1m, 2m, 3m
+    đọc được số xung và tính ra hệ số giữa quãng đường đi và số xung
 """
 
-def distanceForward():
-    while True:  # Ví dụ về sử dụng vòng lặp while
-        Forward(45, 45)
-        pulseA = myEncoderA.position
-        pulseB = myEncoderB.position
-        if (pulseA == 7850) or (pulseB == 7850):
-            Forward(0, 0)
-            break  # Thoát khỏi vòng lặp while nếu điều kiện được thỏa mãn
-        print ("PulseA: ", pulseA)
-        print ("PulseB: ", pulseB)
+def controlForward(distance):
+    PPR = 2390
+    K = 0.01275     # Hệ số khoảng cách
+    pulse_right = distance / K
+    pulse_left  = distance  / K
+
+    gocquay_right = (pulse_right*360)/PPR
+    gocquay_left  = (pulse_left*360)/PPR
+    PID_right(gocquay_right, 't')
+    PID_left(gocquay_left,'t')
+
+def distanceForward(distance):
+    PPR = 2390
+    K = 0.01275     # Hệ số khoảng cách
+    pulse_right = distance / K
+    pulse_left  = distance  / K
+
+    gocquay_right = (pulse_right*360)/PPR
+    gocquay_left  = (pulse_left*360)/PPR
+
+    pid_roirac_vitri_phai.PID(gocquay_left)
+    pwm_left = pid_roirac_vitri_trai.output
+    pid_roirac_vitri_trai.PID(gocquay_right)
+    pwm_right = pid_roirac_vitri_phai.output
+
+    Forward(pwm_left, pwm_right)
         
 def main():
-    # distanceForward()
     while True:
-        pid_roirac_vitri_phai.PID_roirac_vitri_phai(400, 0.03, 0.00005, 0.00005, 30)
-        pwm_left = pid_roirac_vitri_trai.output
-        pid_roirac_vitri_trai.PID_roirac_vitri_trai(400, 0.03, 0.00005, 0.00005, 30)
-        pwm_right = pid_roirac_vitri_phai.output
-        Forward(pwm_left, pwm_right)
-
+        distanceForward(100)
 if __name__ == "__main__":
     main()
 

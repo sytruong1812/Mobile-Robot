@@ -1,5 +1,18 @@
 import Adafruit_BBIO.PWM as PWM
-from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP2
+import Adafruit_BBIO.GPIO as GPIO
+# from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP2
+
+#Encoder 2
+phaseA2 = "P8_11"
+phaseB2 = "P8_12"
+pulse2 = 0
+GPIO.setup(phaseA2 , GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(phaseB2 , GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.add_event_detect(phaseA2, GPIO.RISING)
+
+# myEncoderA = RotaryEncoder(eQEP2)       #eQEP2    P8.11    P8.12
+# myEncoderA.setAbsolute()
+# myEncoderB.frequency = 1000
 
 RPWM_A = "P8_13"
 LPWM_A = "P8_19"
@@ -7,32 +20,40 @@ LPWM_A = "P8_19"
 PWM.start(RPWM_A, 100, 2000, 1)
 PWM.start(LPWM_A, 100, 2000, 1)
 
-myEncoderA = RotaryEncoder(eQEP2)       #eQEP2    P8.11    P8.12
-myEncoderA.setAbsolute()
-# myEncoderB.frequency = 1000
-pulse = 0 
-
-"""PID rời rạc vị trí"""
-tocdo = 0
 E = 0; E1 = 0; E2 = 0           # Sai số
 output = 0; last_output = 0     # PWM điều khiển động cơ
 alpha = 0; beta = 0; gama = 0 
 
-# Kp = 0.03; Ki = 0.00005; Kd = 0.00005
-# T = 30           # Thời gian lấy mẫu (Quan trọng)
-# PPR = 2300       # Encoder đo được 2390 xung / vòng
+Kp = 1.5; Ki = 0.0; Kd = 0.01
+T = 5           # Thời gian lấy mẫu (Quan trọng)
+PPR = 600       # Encoder đo được 2390 xung / vòng
 
-def PID_roirac_tocdo_trai(tocdodat, Kp, Kd, Ki, T):
-    global E, E1, E2, last_output, output
+def Encoder2():
+    global pulse2    # Khai báo biến toàn cục
+    if GPIO.event_detected(phaseA2):
+        if GPIO.input(phaseB2) == 0:
+            pulse2 += 1
+        else:
+            pulse2 -= 1
+    return pulse2
+
+def PID(output, tocdodat):
+    global E, E1, E2, last_output
     global alpha, beta, gama, pulse
     
-    pulse = myEncoderA.position
+    # pulse = myEncoderA.position
+    pulse = Encoder2()
 
-    # tocdo = (pulse / 2300) * (60 / T)       # Từ số xung/phút -> vận tốc
-    tocdo = ((pulse) * (60 * (1000 / T))) / 2300        # Từ số xung/phút -> vận tốc
+    # tocdothuc = (pulse / 2300) * (1 / T) * 60        # Từ số xung/phút -> vận tốc
+    tocdothuc = (pulse/PPR) * (1 / T) * 60        # Từ số xung/phút -> vận tốc
+    # pulse = 0 
     
     # Tính sai số E
-    E = abs(tocdodat) - abs(tocdo)
+    if(tocdodat > tocdothuc): 
+        E = abs(tocdodat) - abs(tocdothuc)
+    if(tocdodat < tocdothuc): 
+        E = abs(tocdothuc) - abs(tocdodat)
+    # E = abs(tocdodat) - abs(tocdothuc)
 
     alpha = (2 * T * Kp) + (Ki * T * T) + (2 * Kd)
     beta = (T * T * Ki) - (4 * Kd) - (2 * T * Kp)
@@ -47,7 +68,8 @@ def PID_roirac_tocdo_trai(tocdodat, Kp, Kd, Ki, T):
     if(output < 30):
         output = 30
     if(output > 0):
-        output = output
+        output = abs(output)
+    print(f"Ouput left: {output}  Pulse: {pulse}")
     return output
 
 def Motor(pwm):
@@ -56,8 +78,7 @@ def Motor(pwm):
 
 try:
     while True:
-        PID_roirac_tocdo_trai(60, 1.001, 0.0, 0.0, 30)
-        print("Ouput left:", output)
+        output = PID(output, 45)
         Motor(output)
 except KeyboardInterrupt:
     PWM.stop(RPWM_A)

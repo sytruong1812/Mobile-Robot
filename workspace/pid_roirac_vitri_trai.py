@@ -18,20 +18,20 @@ E = 0; E1 = 0; E2 = 0           # Sai số
 output = 0; last_output = 0     # PWM điều khiển động cơ
 alpha = 0; beta = 0; gama = 0 
 
-# Kp = 0.03; Ki = 0.00005; Kd = 0.00005
-# T = 30           # Thời gian lấy mẫu (Quan trọng)
-# PPR = 2300       # Encoder đo được 2390 xung / vòng
+Kp = 0.03; Ki = 0.00005; Kd = 0.00005
+T = 30           # Thời gian lấy mẫu (Quan trọng)
+PPR = 2300       # Encoder đo được 2390 xung / vòng
 
-def PID_roirac_vitri_trai(vitridat, Kp, Kd, Ki, T):
+def PID_roirac_vitri_trai(vitridat):
     global E, E1, E2, last_output, output
     global alpha, beta, gama, pulse
     
     pulse = myEncoderA.position
 
-    vitri = ((pulse*360)/2300)
+    vitrithuc = ((pulse*360)/PPR)
     
     # Tính sai số E
-    E = vitridat - vitri
+    E = vitridat - vitrithuc
 
     alpha = (2 * T * Kp) + (Ki * T * T) + (2 * Kd)
     beta = (T * T * Ki) - (4 * Kd) - (2 * T * Kp)
@@ -41,8 +41,8 @@ def PID_roirac_vitri_trai(vitridat, Kp, Kd, Ki, T):
     E2 = E1
     E1 = E 
 
-    if(output > 60):
-        output = 60
+    if(output > 40):
+        output = 40
     if(output < 30):
         output = 0
     if(output > 0):
@@ -53,15 +53,15 @@ def Motor(pwm):
     PWM.set_duty_cycle(RPWM_A, pwm)
     PWM.set_duty_cycle(LPWM_A, 0)
 
-try: 
-    while True:
-        PID_roirac_vitri_trai(8045, 0.03, 0.00005, 0.00005, 30)
-        print("Ouput left:", output)
-        Motor(output)
-except KeyboardInterrupt:
-    PWM.stop(RPWM_A)
-    PWM.stop(LPWM_A)
-    PWM.cleanup()
+# try: 
+#     while True:
+#         PID_roirac_vitri_trai(8045)
+#         print("Ouput left:", output)
+#         Motor(output)
+# except KeyboardInterrupt:
+#     PWM.stop(RPWM_A)
+#     PWM.stop(LPWM_A)
+#     PWM.cleanup()
 
 
 

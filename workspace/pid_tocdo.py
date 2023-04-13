@@ -1,7 +1,7 @@
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO
-# from Adafruit_BBIO.Encoder import RotaryEncoder, eQEP0
 
+"""Encoder"""
 #Encoder 0
 phaseA0 = "P9_27"
 phaseB0 = "P9_42"
@@ -10,15 +10,21 @@ GPIO.setup(phaseA0 , GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(phaseB0 , GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.add_event_detect(phaseA0, GPIO.RISING)
 
-# myEncoderB = RotaryEncoder(eQEP0)       #eQEP0    P9.27    P9.42
-# myEncoderB.setAbsolute()
-# myEncoderB.frequency = 1000
+#Encoder 2
+phaseA2 = "P8_11"
+phaseB2 = "P8_12"
+pulse2 = 0
+GPIO.setup(phaseA2 , GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(phaseB2 , GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.add_event_detect(phaseA2, GPIO.RISING)
 
 RPWM_B = "P9_16"
 LPWM_B = "P9_14"
 
 PWM.start(RPWM_B, 100, 2000, 1)
 PWM.start(LPWM_B, 100, 2000, 1)
+
+pulse = 0 
 
 E = 0; E1 = 0; E2 = 0           # Sai số
 output = 0; last_output = 0     # PWM điều khiển động cơ
@@ -36,14 +42,20 @@ def Encoder0():
         else:
             pulse0 -= 1
     return pulse0
+def Encoder2():
+    global pulse2    # Khai báo biến toàn cục
+    if GPIO.event_detected(phaseA2):
+        if GPIO.input(phaseB2) == 0:
+            pulse2 += 1
+        else:
+            pulse2 -= 1
+    return pulse2
 
 def PID(output, tocdodat):
     global E, E1, E2, last_output
     global alpha, beta, gama, pulse
 
-    # pulse = myEncoderB.position
     pulse = Encoder0()
-
     # tocdothuc = (pulse / 2300) * (1 / T) * 60        # Từ số xung/phút -> vận tốc
     tocdothuc = (pulse/PPR) * (1 / T) * 60        # Từ số xung/phút -> vận tốc
     # pulse = 0
